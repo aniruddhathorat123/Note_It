@@ -10,14 +10,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var file = File(WriterConstants.WRITER_FILE)
+        val file = File(WriterConstants.WRITER_FILE)
         if (file.exists()){
             filehandler = FileHandler.getInstance()
             var data = filehandler.getStringData(file)
-
         }
         else{
-
         }
     }
 }

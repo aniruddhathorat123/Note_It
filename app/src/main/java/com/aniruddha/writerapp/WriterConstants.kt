@@ -9,6 +9,7 @@ class WriterConstants{
         val TABLE_NAME = "writer_table_list"
         val GET_FILES_NAME_QUERY = "SELECT * FROM $TABLE_NAME"
         val NEW_USER_FILES_QUERY = "CREATE TABLE $TABLE_NAME (Files TEXT)"
+        val FILES_LIST = "files_list"
     }
 
 }
