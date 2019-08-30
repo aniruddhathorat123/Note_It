@@ -1,13 +1,12 @@
 package com.aniruddha.writerapp
 
-import android.content.Context
 import java.io.File
 import java.io.FileInputStream
 import java.io.*
 import java.lang.StringBuilder
 
 class FileHandler{
-    private lateinit var data : String
+    private lateinit var data : ArrayList<String>
     companion object
     {
         private var instance : FileHandler? = null
@@ -21,12 +20,16 @@ class FileHandler{
         }
     }
 
-    fun getStringData(file : File):String{
+    fun getStringData(file : File):ArrayList<String>{
         var text : String? = null
-        var bufferedReader = BufferedReader(InputStreamReader(FileInputStream(file)))
+        val bufferedReader = BufferedReader(InputStreamReader(FileInputStream(file)))
         while( { text = bufferedReader.readLine(); text}() != null){
-            StringBuilder(data).append(text).append(".")
+            data.add(text.toString())
         }
         return data
+    }
+
+    fun putStringData(data: String){
+
     }
 }
