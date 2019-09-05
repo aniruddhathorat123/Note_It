@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.file_list_item.view.*
 
 class FileListAdapter(
-    private val items : ArrayList<String>,
+    private val items : MutableList<String>,
     private val listener: FilesListFragment):
     RecyclerView.Adapter<FileListAdapter.MyViewHolder>(){
 
@@ -30,6 +30,10 @@ class FileListAdapter(
             itemView.setOnClickListener{
                 listener.onFileNameClick(adapterPosition)
             }
+            itemView.setOnLongClickListener {
+                listener.onLongFileNameClick((items[adapterPosition]),it)
+                return@setOnLongClickListener true
+            }
         }
     }
 
@@ -39,5 +43,6 @@ class FileListAdapter(
 
     interface OnFileNameClickListener{
         fun onFileNameClick(position : Int)
+        fun onLongFileNameClick(item: String,view: View)
     }
 }

@@ -1,16 +1,15 @@
 package com.aniruddha.writerapp
 
 import java.io.File
-import java.io.FileInputStream
-import java.io.*
-import java.lang.StringBuilder
 
+/**
+ * File operations are more easy in Kotlin and we are going to use it.
+ * File().readText() or writeText() can able to handle data up to size 2GB.
+ */
 class FileHandler{
-    private lateinit var data : ArrayList<String>
     companion object
     {
         private var instance : FileHandler? = null
-
         fun getInstance():FileHandler{
             if(instance == null) {
                 instance = FileHandler()
@@ -20,16 +19,27 @@ class FileHandler{
         }
     }
 
-    fun getStringData(file : File):ArrayList<String>{
-        var text : String? = null
-        val bufferedReader = BufferedReader(InputStreamReader(FileInputStream(file)))
-        while( { text = bufferedReader.readLine(); text}() != null){
-            data.add(text.toString())
-        }
-        return data
+    private lateinit var data : ArrayList<String>
+    private val location = WriterConstants.FILE_STORAGE_LOCATION
+
+    fun getFileData(file : String):String {
+        return File("$location/$file").readText()
     }
 
-    fun putStringData(data: String){
+    fun saveFileData(file: String, data: String) {
+        File("$location/$file").writeText(data)
+    }
 
+    fun createNewFile(file: String) {
+        println("Create file path:$location")
+        File("$location/$file").createNewFile()
+    }
+
+    fun deleteFile(file: String) {
+        File("$location/$file").delete()
+    }
+
+    fun renameFile(oldName: String, newName: String) {
+        File("$location/$oldName").renameTo(File("$location/$newName"))
     }
 }

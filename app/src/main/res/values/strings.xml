@@ -3,4 +3,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_files_message">No Files Found</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="renameFileMessage">Rename File</string>
+    <string name="deleteFileMessage">Delete File</string>
+    <string name="saveFileMessage">Save</string>
+    <string name="sendFileMessage">Send</string>
+    <string name="permissionTitle">Required Permission to run app</string>
+    <string name="permissionList">Storage Read and Write to store your file data.</string>
 </resources>
