@@ -27,7 +27,7 @@ class DialogBuilders(private val context: Context){
         builder.setMessage("Enter the name of new file:")
         builder.setView(newFileName)
 
-        builder.setPositiveButton("Yes"){dialog, which ->
+        builder.setPositiveButton(android.R.string.yes){dialog, which ->
             listener.createNewFile(newFileName.text.toString())
         }
 
@@ -46,7 +46,7 @@ class DialogBuilders(private val context: Context){
         builder.setMessage("Enter the new name of file:")
         builder.setView(newFileName)
 
-        builder.setPositiveButton("Yes"){dialog, which ->
+        builder.setPositiveButton("Rename"){dialog, which ->
             dbhandler.updateFileName(oldName,newFileName.text.toString())
             fileHandler
                 .renameFile(oldName,newFileName.text.toString())
@@ -62,12 +62,14 @@ class DialogBuilders(private val context: Context){
         val builder = AlertDialog.Builder(context)
             .setTitle("Delete File")
             .setMessage("Are you sure to delete file : '$file'?")
-            .setPositiveButton("Yes") { dialog, which ->
+            .setPositiveButton(android.R.string.yes) { dialog, which ->
                 dbhandler.deleteFile(file)
                 fileHandler.deleteFile(file)
                 listener.validateAdapter(1)
+                Toast.makeText(context,"'$file' deleted successfully",Toast.LENGTH_LONG)
+                    .show()
             }
-            .setNegativeButton("No") { dialog, which ->
+            .setNegativeButton(android.R.string.no) { dialog, which ->
             }
         return builder.create()
     }
@@ -76,10 +78,10 @@ class DialogBuilders(private val context: Context){
         val builder = AlertDialog.Builder(context)
             .setTitle("Save File '$file'")
             .setMessage("Want to save data before leave?")
-            .setPositiveButton("Yes") { dialog, which ->
+            .setPositiveButton(android.R.string.yes) { dialog, which ->
                 fileHandler.saveFileData(file,data)
             }
-            .setNegativeButton("No") { dialog, which ->
+            .setNegativeButton(android.R.string.no) { dialog, which ->
             }
         return builder.create()
     }

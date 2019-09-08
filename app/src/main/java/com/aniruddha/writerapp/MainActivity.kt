@@ -102,8 +102,14 @@ class MainActivity : AppCompatActivity() {
     private fun callFragment(){
         val fragments = supportFragmentManager.fragments
         for (f in fragments) {
-            if (f != null && f is FileDataContainerFragment)
-                f.saveEditData()
+            when (f) {
+                is FileDataContainerFragment -> {
+                    f.saveEditData()
+                }
+                is FilesListFragment -> {
+                    finish()
+                }
+            }
         }
     }
 }

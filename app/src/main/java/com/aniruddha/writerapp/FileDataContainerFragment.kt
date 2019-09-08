@@ -86,6 +86,9 @@ class FileDataContainerFragment : Fragment(), OnBackPressed {
                 fileData.text.toString()
             ).show()
         }
+        (activity as AppCompatActivity).supportActionBar!!.setHomeButtonEnabled(false)
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity).supportActionBar!!.subtitle = null
     }
 }
 

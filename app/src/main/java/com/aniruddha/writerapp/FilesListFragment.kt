@@ -115,8 +115,6 @@ class FilesListFragment : Fragment(),
                 }
                 else -> {
                     deleteFile(item)
-                    Toast.makeText(requireContext(),"'$item' deleted successfully",Toast.LENGTH_LONG)
-                        .show()
                     validateAdapter(1)
                     true
                 }
