@@ -9,6 +9,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import kotlin.system.exitProcess
+import androidx.core.app.ComponentActivity
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var fragment: FilesListFragment
@@ -82,5 +88,22 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fileListFragment, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    /**
+     * This method is used when user pressed the back button while editing the file.
+     * Mostly same as clickListener in Recycler View.
+     */
+    override fun onBackPressed() {
+        callFragment()
+        super.onBackPressed()
+    }
+
+    private fun callFragment(){
+        val fragments = supportFragmentManager.fragments
+        for (f in fragments) {
+            if (f != null && f is FileDataContainerFragment)
+                f.saveEditData()
+        }
     }
 }

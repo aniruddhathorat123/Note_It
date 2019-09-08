@@ -6,10 +6,17 @@ import android.text.InputType
 import android.widget.EditText
 import android.widget.Toast
 
-class DialogBuilders(private val context: Context, private val listner: FilesListFragment){
+class DialogBuilders(private val context: Context){
+
+    constructor(context: Context, listener: FilesListFragment):
+            this(context) {
+        this.listener = listener
+    }
+
     private lateinit var newFileName: EditText
     private val dbhandler = DatabaseHandler.getInstance(context)
     private val fileHandler = FileHandler.getInstance()
+    private lateinit var listener: FilesListFragment
 
     fun fileCreationDialogBuilder(): AlertDialog{
         newFileName = EditText(context)
@@ -21,7 +28,7 @@ class DialogBuilders(private val context: Context, private val listner: FilesLis
         builder.setView(newFileName)
 
         builder.setPositiveButton("Yes"){dialog, which ->
-            listner.createNewFile(newFileName.text.toString())
+            listener.createNewFile(newFileName.text.toString())
         }
 
         builder.setNegativeButton(android.R.string.no) { dialog, which ->
@@ -43,7 +50,7 @@ class DialogBuilders(private val context: Context, private val listner: FilesLis
             dbhandler.updateFileName(oldName,newFileName.text.toString())
             fileHandler
                 .renameFile(oldName,newFileName.text.toString())
-            listner.validateAdapter(1)
+            listener.validateAdapter(1)
         }
 
         builder.setNegativeButton(android.R.string.no) { dialog, which ->
@@ -58,7 +65,19 @@ class DialogBuilders(private val context: Context, private val listner: FilesLis
             .setPositiveButton("Yes") { dialog, which ->
                 dbhandler.deleteFile(file)
                 fileHandler.deleteFile(file)
-                listner.validateAdapter(1)
+                listener.validateAdapter(1)
+            }
+            .setNegativeButton("No") { dialog, which ->
+            }
+        return builder.create()
+    }
+
+    fun fileSaveDialogBuilder(file: String, data: String): AlertDialog {
+        val builder = AlertDialog.Builder(context)
+            .setTitle("Save File '$file'")
+            .setMessage("Want to save data before leave?")
+            .setPositiveButton("Yes") { dialog, which ->
+                fileHandler.saveFileData(file,data)
             }
             .setNegativeButton("No") { dialog, which ->
             }

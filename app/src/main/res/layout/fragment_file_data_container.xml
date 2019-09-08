@@ -11,21 +11,24 @@
         android:layout_height="wrap_content"
         android:id="@+id/filDetailToolbar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+        />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="top|start"
         android:id="@+id/fileData"
-        android:background="@null"
+        android:background="#F9E79F"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:inputType="textMultiLine"
+        android:inputType="textCapSentences|textMultiLine"
         android:overScrollMode="always"
         android:scrollbarStyle="insideInset"
         android:scrollbars="vertical"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:scrollHorizontally="false"
+        android:padding="5dp"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

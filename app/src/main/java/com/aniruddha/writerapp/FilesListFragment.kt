@@ -1,7 +1,6 @@
 package com.aniruddha.writerapp
 
 import android.app.AlertDialog
-import android.graphics.ColorSpace
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -37,7 +36,6 @@ class FilesListFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
 
         addFileButton.setOnClickListener{
-            //Toast.makeText(requireContext(),"Dir:"+requireContext().filesDir,Toast.LENGTH_LONG).show()
             val alertDialog: AlertDialog = DialogBuilders(requireContext(),this)
                 .fileCreationDialogBuilder()
             // Set other dialog properties
@@ -66,7 +64,6 @@ class FilesListFragment : Fragment(),
     //create dialog for file creation
 
     override fun createNewFile(name:String) {
-        Toast.makeText(requireContext(),"File name: $name",Toast.LENGTH_LONG).show()
         for(i in 0.rangeTo(data.size-1)) {
             if(data[i]==name) {
                 Toast.makeText(requireContext(),
@@ -106,24 +103,20 @@ class FilesListFragment : Fragment(),
     override fun onFileNameClick(position : Int) {
         val fragment = FileDataContainerFragment.getInstance(data[position])
         (requireActivity() as MainActivity).replaceFragment(fragment)
-
     }
 
     override fun onLongFileNameClick(item: String,view: View) {
-        Toast.makeText(requireContext(),"Long click on :$item", Toast.LENGTH_LONG).show()
         val popupMenu= PopupMenu(requireContext(),view)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId){
                 R.id.renameFileMenu -> {
-                    Toast.makeText(requireContext(),"Rename file clicked",Toast.LENGTH_LONG)
-                        .show()
                     renameFileClicked(item)
                     true
                 }
                 else -> {
-                    Toast.makeText(requireContext(),"Delete file clicked",Toast.LENGTH_LONG)
-                        .show()
                     deleteFile(item)
+                    Toast.makeText(requireContext(),"'$item' deleted successfully",Toast.LENGTH_LONG)
+                        .show()
                     validateAdapter(1)
                     true
                 }
