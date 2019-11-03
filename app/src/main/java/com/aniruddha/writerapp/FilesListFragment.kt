@@ -65,7 +65,7 @@ class FilesListFragment : Fragment(),
 
     override fun createNewFile(name:String) {
         for(i in 0.rangeTo(data.size-1)) {
-            if(data[i]==name) {
+            if(data[i] == name) {
                 Toast.makeText(requireContext(),
                     "File with name:'$name' already exists",
                     Toast.LENGTH_LONG).show()

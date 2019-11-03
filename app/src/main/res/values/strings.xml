@@ -9,4 +9,5 @@
     <string name="sendFileMessage">Send</string>
     <string name="permissionTitle">Required Permission to run app</string>
     <string name="permissionList">Storage Read and Write to store your file data.</string>
+    <string name="service_not_available_text">This Service is not available yet, Wait for next update.</string>
 </resources>

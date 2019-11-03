@@ -5,11 +5,12 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_file_data_container.*
 import android.view.MenuInflater
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.fragment_files_list.*
+
 
 /**
- * A simple [Fragment] subclass.
+ * Fragment shows the contents of file and user can edit and save the contents.
  */
 class FileDataContainerFragment : Fragment(), OnBackPressed {
 
@@ -51,8 +52,14 @@ class FileDataContainerFragment : Fragment(), OnBackPressed {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.saveFileMenu -> {
-                file.saveFileData(fileName,fileData.text.toString())
+                availableFileData = fileData.text.toString()
+                file.saveFileData(fileName, availableFileData)
                 return true
+            }
+            R.id.sendFileMenu -> {
+                Toast.makeText(requireContext(),
+                    R.string.service_not_available_text,
+                    Toast.LENGTH_LONG).show()
             }
             android.R.id.home -> {
                 saveEditData()

@@ -89,5 +89,4 @@ class DialogBuilders(private val context: Context){
     interface DialogFunctionCall{
         fun createNewFile(name: String)
     }
-
 }
