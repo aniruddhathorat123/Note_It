@@ -62,12 +62,18 @@ class FilesListFragment : Fragment(),
     }
 
     //create dialog for file creation
-
-    override fun createNewFile(name:String) {
+    override fun createNewFile(name: String) {
         for(i in 0.rangeTo(data.size-1)) {
-            if(data[i] == name) {
+            if(data[i] == name ) {
                 Toast.makeText(requireContext(),
                     "File with name:'$name' already exists",
+                    Toast.LENGTH_LONG).show()
+                return
+            }
+
+            if (name.isBlank()) {
+                Toast.makeText((requireActivity()),
+                    "Invalid File name",
                     Toast.LENGTH_LONG).show()
                 return
             }

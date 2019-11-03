@@ -27,7 +27,7 @@ class DialogBuilders(private val context: Context){
         builder.setMessage("Enter the name of new file:")
         builder.setView(newFileName)
 
-        builder.setPositiveButton(android.R.string.yes){dialog, which ->
+        builder.setPositiveButton(R.string.create_file_text){dialog, which ->
             listener.createNewFile(newFileName.text.toString())
         }
 
