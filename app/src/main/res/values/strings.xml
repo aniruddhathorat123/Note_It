@@ -1,14 +1,29 @@
 <resources>
     <string name="app_name">Note it</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="no_files_message">No Files Found</string>
+    <string name="no_notes_message">No notes found</string>
     <string name="title_activity_main2">Main2Activity</string>
-    <string name="renameFileMessage">Rename File</string>
-    <string name="deleteFileMessage">Delete File</string>
-    <string name="saveFileMessage">Save</string>
-    <string name="sendFileMessage">Send</string>
-    <string name="create_file_text">Create</string>
-    <string name="permissionTitle">Required Permission to run app</string>
-    <string name="permissionList">Storage Read and Write to store your file data.</string>
-    <string name="service_not_available_text">This Service is not available yet, Wait for next update.</string>
+    <string name="rename_note_menu_text">Rename note</string>
+    <string name="delete_note_menu_text">Delete note</string>
+    <string name="save_note_menu_text">Save note</string>
+    <string name="share_note_menu_text">Share note</string>
+    <string name="export_note_menu_text">Export note</string>
+    <string name="create_note_button_text">Create</string>
+    <string name="permissionTitle">Required permission to run app</string>
+    <string name="permissionList">Storage read and write to store your file data.</string>
+    <string name="service_not_available_text">This Service is not available yet.</string>
+    <string name="cancel_dialog_button_text">Cancel</string>
+    <string name="new_note_title_text">"New Note"</string>
+    <string name="new_note_hint_text">"Note name"</string>
+    <string name="new_note_message_text">"Enter the name of new note:"</string>
+    <string name="rename_note_title_text">Rename Note</string>
+    <string name="rename_note_button_text">Rename</string>
+    <string name="delete_note_title_text">"Delete note"</string>
+    <string name="delete_note_message_text">"Are you sure to delete note : '%1$s'?"</string>
+    <string name="delete_note_button_text">Delete</string>
+    <string name="delete_success_toast_text">"'%1$s' deleted successfully"</string>
+    <string name="save_note_title_text">"Save note '%1$s'"</string>
+    <string name="save_note_message_text">"Want to save data before leave?"</string>
+    <string name="save_note_button_text">Save</string>
+
 </resources>

@@ -1,5 +1,8 @@
 package com.aniruddha.writerapp
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -7,6 +10,22 @@ import kotlinx.android.synthetic.main.fragment_file_data_container.*
 import android.view.MenuInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.core.app.ActivityCompat.startActivityForResult
+
+import android.provider.DocumentsContract
+import android.app.Activity
+import android.content.ContentResolver
+import android.content.res.AssetFileDescriptor
+import android.os.ParcelFileDescriptor
+import androidx.core.content.FileProvider
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.lang.IllegalArgumentException
+import java.nio.charset.Charset
+import java.nio.file.Files
+import java.nio.file.Path
 
 
 /**
@@ -51,15 +70,42 @@ class FileDataContainerFragment : Fragment(), OnBackPressed {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
+            /* Save updated file contents.*/
             R.id.saveFileMenu -> {
                 availableFileData = fileData.text.toString()
                 file.saveFileData(fileName, availableFileData)
                 return true
             }
-            R.id.sendFileMenu -> {
-                Toast.makeText(requireContext(),
+            R.id.shareFileMenu -> {
+                if (availableFileData.isEmpty()) {
+                    Toast.makeText(requireContext(), "Can't share empty file", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                ExportOutFile.shareSingleFile(requireContext(), fileName)
+                /*Toast.makeText(requireContext(),
                     R.string.service_not_available_text,
-                    Toast.LENGTH_LONG).show()
+                    Toast.LENGTH_LONG).show()*/
+            }
+            /* Export current file to defined location. */
+            R.id.exportFileMenu -> {
+                if (availableFileData.isEmpty()) {
+                    Toast.makeText(requireContext(), "Can't export empty file", Toast.LENGTH_SHORT)
+                        .show()
+                    return true;
+                }
+                if (checkSelfPermission(
+                        requireContext(),
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Storage permission denied",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return true;
+                }
+                createFile()
             }
             android.R.id.home -> {
                 saveEditData()
@@ -81,6 +127,47 @@ class FileDataContainerFragment : Fragment(), OnBackPressed {
         super.onSaveInstanceState(outState)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        /**
+         * Export the file to specified location by user.
+         */
+        if (requestCode == WriterConstants.CREATE_FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            // The result data contains a URI for the document or directory that the user selected.
+            var uri: Uri? = null
+            if (data != null) {
+                try {
+                    uri = data.data
+                    if (uri == null || uri.path.isNullOrEmpty()) {
+                        throw IllegalArgumentException("Unable to save on Empty file Uri.")
+                    }
+                    val resolver = requireContext().contentResolver
+                    val outputStream =
+                        resolver.openOutputStream(uri, "rw")
+                            ?: throw IOException("Error in OutputStream")
+
+                    val inputStream =
+                        resolver.openInputStream(Uri.fromFile(file.getFile(fileName)))
+                            ?: throw IOException("Error in InputStream")
+                    val buf = ByteArray(8192)
+                    var length: Int
+                    while (inputStream.read(buf).also { length = it } > 0) {
+                        outputStream.write(buf, 0, length)
+                    }
+                    outputStream.close()
+                    inputStream.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    Toast.makeText(requireContext(), "Unable to save file", Toast.LENGTH_SHORT)
+                        .show()
+                } catch (e: IllegalArgumentException) {
+                    e.printStackTrace()
+                    Toast.makeText(requireContext(), "Unable to save file", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+    }
+
     /**
      * Called when user press the back button.
      * check whether user modify file content or not.
@@ -96,6 +183,21 @@ class FileDataContainerFragment : Fragment(), OnBackPressed {
         (activity as AppCompatActivity).supportActionBar!!.setHomeButtonEnabled(false)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
         (activity as AppCompatActivity).supportActionBar!!.subtitle = null
+    }
+
+    /**
+     * This function navigate the user to storage location where user want to store the file.
+     */
+    private fun createFile() {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TITLE, "$fileName.txt")
+
+        // Optionally, specify a URI for the directory that should be opened in
+        // the system file picker when your app creates the document.
+        //intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
+        startActivityForResult(intent, WriterConstants.CREATE_FILE_REQUEST_CODE)
     }
 }
 

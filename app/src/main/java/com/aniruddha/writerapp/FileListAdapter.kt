@@ -6,8 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.file_list_item.view.*
 
+/**
+ * Adapter class used to shows the list of all notes which created by users.
+ */
 class FileListAdapter(
-    private val items : MutableList<String>,
+    private var items : MutableList<String>,
     private val listener: FilesListFragment):
     RecyclerView.Adapter<FileListAdapter.MyViewHolder>(){
 

@@ -22,6 +22,10 @@ class FileHandler{
     private lateinit var data : ArrayList<String>
     private val location = WriterConstants.FILE_STORAGE_LOCATION
 
+    fun getFile(file: String):File {
+        return File("$location/$file")
+    }
+
     fun getFileData(file : String):String {
         return File("$location/$file").readText()
     }
@@ -41,5 +45,9 @@ class FileHandler{
 
     fun renameFile(oldName: String, newName: String) {
         File("$location/$oldName").renameTo(File("$location/$newName"))
+    }
+
+    fun copyFile(sourceFileName: String, destinationFile: File) {
+        destinationFile.writeText(getFileData(sourceFileName))
     }
 }

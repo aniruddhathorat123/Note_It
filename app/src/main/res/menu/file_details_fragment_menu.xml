@@ -2,8 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/saveFileMenu"
-        android:title="@string/saveFileMessage" />
+        android:title="@string/save_note_menu_text" />
     <item
-        android:id="@+id/sendFileMenu"
-        android:title="@string/sendFileMessage" />
+        android:id="@+id/shareFileMenu"
+        android:title="@string/share_note_menu_text" />
+    <item
+        android:id="@+id/exportFileMenu"
+        android:title="@string/export_note_menu_text" />
 </menu>

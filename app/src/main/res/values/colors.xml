@@ -3,4 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorDataBackgroundColor">#F9E79F</color>
+    <color name="colorDataBackgroundColor2">#fff59d</color>
+    <color name="colorFileListGradientColor">#FFFFFF</color>
+    <color name="colorFileItemBackgroundColor">#ffcc80</color>
 </resources>

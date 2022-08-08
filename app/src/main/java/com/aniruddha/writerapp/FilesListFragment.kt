@@ -45,17 +45,15 @@ class FilesListFragment : Fragment(),
 
         dbHandler = DatabaseHandler.getInstance(requireContext())
         data = dbHandler.getFileList()
-        if (data.isNotEmpty()){
-            //fileListFragment.visibility = View.VISIBLE
-            adapter = FileListAdapter(data,this)
-            fileListRecyclerView.apply {
-                this.adapter = this@FilesListFragment.adapter
-                this.layoutManager = LinearLayoutManager(requireContext(),
-                    LinearLayoutManager.VERTICAL,
-                    false)
-            }
+        adapter = FileListAdapter(data,this)
+        fileListRecyclerView.apply {
+            this.adapter = this@FilesListFragment.adapter
+            this.layoutManager = LinearLayoutManager(requireContext(),
+                LinearLayoutManager.VERTICAL,
+                false)
         }
-        else{
+        if (data.isEmpty()){
+            //fileListFragment.visibility = View.VISIBLE
             noFilesTextView.visibility = View.VISIBLE
         }
         mainProgressBar.visibility = View.GONE
@@ -64,14 +62,14 @@ class FilesListFragment : Fragment(),
     //create dialog for file creation
     override fun createNewFile(name: String) {
         for(i in 0.rangeTo(data.size-1)) {
-            if(data[i] == name ) {
+            if(data[i] == name) {
                 Toast.makeText(requireContext(),
                     "File with name:'$name' already exists",
                     Toast.LENGTH_LONG).show()
                 return
             }
 
-            if (name.isBlank()) {
+            if (name.isEmpty()) {
                 Toast.makeText((requireActivity()),
                     "Invalid File name",
                     Toast.LENGTH_LONG).show()
@@ -96,12 +94,14 @@ class FilesListFragment : Fragment(),
                 data = dbHandler.getFileList()
                 adapter = FileListAdapter(data,this)
                 fileListRecyclerView.adapter = adapter
+                updateNoFileState(data.size)
             }
             else -> {
                 data = dbHandler.getFileList()
                 adapter = FileListAdapter(data,this)
                 fileListRecyclerView.invalidate()
                 fileListRecyclerView.adapter = adapter
+                updateNoFileState(data.size)
             }
         }
     }
@@ -142,5 +142,13 @@ class FilesListFragment : Fragment(),
             .fileDeleteDialogBuilder(name)
         alertDialog.setCancelable(false)
         alertDialog.show()
+    }
+
+    private fun updateNoFileState(size: Int) {
+        if (size > 0) {
+            noFilesTextView.visibility = View.GONE
+        } else {
+            noFilesTextView.visibility = View.VISIBLE
+        }
     }
 }

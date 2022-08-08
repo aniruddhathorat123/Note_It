@@ -1,6 +1,5 @@
 package com.aniruddha.writerapp
 
-import android.content.Context
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,12 +8,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import kotlin.system.exitProcess
-import androidx.core.app.ComponentActivity
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var fragment: FilesListFragment
