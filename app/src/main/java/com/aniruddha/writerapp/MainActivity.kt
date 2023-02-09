@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(savedInstanceState==null) {
+        if (savedInstanceState==null) {
             if (ContextCompat.checkSelfPermission(
                     this,
                     android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
@@ -28,22 +28,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showPermissionDialog(){
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE)){
             AlertDialog.Builder(this)
                 .setTitle(R.string.permissionTitle)
                 .setMessage(R.string.permissionList)
-                .setPositiveButton("Ok"){dialog, which ->
+                .setPositiveButton("Allow"){dialog, which ->
                     ActivityCompat.requestPermissions(this,
                         arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE ,
                             android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
                         WriterConstants.STORAGE_PERMISSION_CODE)
                 }
                 .setNegativeButton("Not Now"){dialog, which ->
+                    // leave the app.
+                    exitProcess(-1)
                 }
                 .create()
                 .show()
-        }else{
+        } else{
             ActivityCompat.requestPermissions(this,
                 arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -55,14 +57,15 @@ class MainActivity : AppCompatActivity() {
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray) {
-        when(requestCode) {
+        when (requestCode) {
             WriterConstants.STORAGE_PERMISSION_CODE -> {
-                if(grantResults.isNotEmpty() &&
+                if (grantResults.isNotEmpty() &&
                     grantResults[0]==PackageManager.PERMISSION_GRANTED  &&
                     grantResults[1]==PackageManager.PERMISSION_GRANTED) {
                     startFragment()
                 }
-                else{
+                else {
+                    // leave the app.
                     exitProcess(-1)
                 }
             }

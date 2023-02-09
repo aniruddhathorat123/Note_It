@@ -7,8 +7,7 @@ import java.io.File
  * File().readText() or writeText() can able to handle data up to size 2GB.
  */
 class FileHandler{
-    companion object
-    {
+    companion object {
         private var instance : FileHandler? = null
         fun getInstance():FileHandler{
             if(instance == null) {

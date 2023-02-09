@@ -11,21 +11,9 @@ import android.view.MenuInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.core.app.ActivityCompat.startActivityForResult
-
-import android.provider.DocumentsContract
 import android.app.Activity
-import android.content.ContentResolver
-import android.content.res.AssetFileDescriptor
-import android.os.ParcelFileDescriptor
-import androidx.core.content.FileProvider
-import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 import java.lang.IllegalArgumentException
-import java.nio.charset.Charset
-import java.nio.file.Files
-import java.nio.file.Path
 
 
 /**

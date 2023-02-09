@@ -11,6 +11,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_files_list.*
 
+/**
+ *
+ */
 class FilesListFragment : Fragment(),
     FileListAdapter.OnFileNameClickListener,
     DialogBuilders.DialogFunctionCall {

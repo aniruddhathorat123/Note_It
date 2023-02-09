@@ -45,7 +45,7 @@ class FileListAdapter(
     }
 
     interface OnFileNameClickListener{
-        fun onFileNameClick(position : Int)
+        fun onFileNameClick(position: Int)
         fun onLongFileNameClick(item: String,view: View)
     }
 }
