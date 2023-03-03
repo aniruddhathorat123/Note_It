@@ -22,10 +22,15 @@ class FilesListFragment : Fragment(),
     }
 
     //store the list of file, if no files then it empty.
-    private lateinit var data: MutableList<String>
+    private lateinit var data: MutableList<MutableList<String>>
     private lateinit var adapter : FileListAdapter
     private lateinit var dbHandler: DatabaseHandler
     private val fileHandler = FileHandler.getInstance()
+
+    private fun openFileFromName(fileName: String) {
+        val fragment = FileDataContainerFragment.getInstance(fileName)
+        (requireActivity() as MainActivity).replaceFragment(fragment)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,11 +44,14 @@ class FilesListFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
 
         addFileButton.setOnClickListener{
-            val alertDialog: AlertDialog = DialogBuilders(requireContext(),this)
-                .fileCreationDialogBuilder()
+            //val alertDialog: AlertDialog = DialogBuilders(requireContext(),this) .fileCreationDialogBuilder()
             // Set other dialog properties
-            alertDialog.setCancelable(false)
-            alertDialog.show()
+            //alertDialog.setCancelable(false)
+            //alertDialog.show()
+            // create file name from date and time.
+            // so that user can change then later as they want.
+            val fileName : String = Utils.getFileName()
+            createNewFile(fileName)
         }
 
         dbHandler = DatabaseHandler.getInstance(requireContext())
@@ -65,7 +73,7 @@ class FilesListFragment : Fragment(),
     //create dialog for file creation
     override fun createNewFile(name: String) {
         for(i in 0.rangeTo(data.size-1)) {
-            if(data[i] == name) {
+            if(data[i][0] == name) {
                 Toast.makeText(requireContext(),
                     "File with name:'$name' already exists",
                     Toast.LENGTH_LONG).show()
@@ -79,9 +87,13 @@ class FilesListFragment : Fragment(),
                 return
             }
         }
-        dbHandler.insertFileList(name)
+        dbHandler.insertFileList(name, Utils.getDateString())
         fileHandler.createNewFile(name)
         validateAdapter(0)
+
+        // open the created file.
+        openFileFromName(name)
+
     }
 
     /**
@@ -110,8 +122,9 @@ class FilesListFragment : Fragment(),
     }
 
     override fun onFileNameClick(position : Int) {
-        val fragment = FileDataContainerFragment.getInstance(data[position])
-        (requireActivity() as MainActivity).replaceFragment(fragment)
+        openFileFromName(data[position][0])
+        //val fragment = FileDataContainerFragment.getInstance(data[position])
+        //(requireActivity() as MainActivity).replaceFragment(fragment)
     }
 
     override fun onLongFileNameClick(item: String,view: View) {

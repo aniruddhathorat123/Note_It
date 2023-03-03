@@ -21,6 +21,7 @@ class DialogBuilders(private val context: Context){
     private val fileHandler = FileHandler.getInstance()
     private lateinit var listener: FilesListFragment
 
+    @Deprecated("File name get directly from the Utils#getFileName")
     fun fileCreationDialogBuilder(): AlertDialog{
         newFileName = EditText(context)
         newFileName.inputType = InputType.TYPE_CLASS_TEXT

@@ -1,0 +1,12 @@
+
+Required Features:
+DONE - Add app icon in android studio. : Done.
+DONE - create note as soon as user click on `+`, note name can set as first line typed by user in note. : Done by date and time.
+- save data when user click on home button and left the app.
+- Show clear and more info to user related to `Export file` menu workflow.
+DONE - Date and time for each created note.
+
+
+Bugs:
+
+

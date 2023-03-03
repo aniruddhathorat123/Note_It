@@ -10,17 +10,17 @@ import kotlinx.android.synthetic.main.file_list_item.view.*
  * Adapter class used to shows the list of all notes which created by users.
  */
 class FileListAdapter(
-    private var items : MutableList<String>,
+    private var items : MutableList<MutableList<String>>,
     private val listener: FilesListFragment):
     RecyclerView.Adapter<FileListAdapter.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(
+        val fileView = LayoutInflater.from(parent.context).inflate(
             R.layout.file_list_item,
             parent,
             false
             )
-        return MyViewHolder(view)
+        return MyViewHolder(fileView)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int){
@@ -28,13 +28,14 @@ class FileListAdapter(
     }
 
     inner class MyViewHolder(view: View): RecyclerView.ViewHolder(view){
-        fun bind(data: String){
-            itemView.fileItem.text = data
+        fun bind(data: MutableList<String>){
+            itemView.fileItem.text = data[0]
+            itemView.creationDate.text = data[1]
             itemView.setOnClickListener{
                 listener.onFileNameClick(adapterPosition)
             }
             itemView.setOnLongClickListener {
-                listener.onLongFileNameClick((items[adapterPosition]),it)
+                listener.onLongFileNameClick((items[adapterPosition][0]),it)
                 return@setOnLongClickListener true
             }
         }

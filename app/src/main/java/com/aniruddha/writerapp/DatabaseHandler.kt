@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper
 class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
     WriterConstants.DATABASE_NAME,null,
     WriterConstants.DATABASE_VERSION) {
-    //private val db = this.writableDatabase
+    private val db = this.writableDatabase
     companion object{
         private var instance : DatabaseHandler? = null
         fun getInstance(context:Context): DatabaseHandler {
@@ -25,42 +25,51 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        // Create new column : `creationDate` which stores the date for each created file.
+        if (newVersion == 2 && db != null) {
+            db.execSQL(WriterConstants.ALTER_TABLE_ADD_CREATION_DATE_QUERY)
+        }
     }
 
-    fun getFileList():MutableList<String> {
-        val db = this.writableDatabase
-        val list  = mutableListOf<String>()
+    fun getFileList():MutableList<MutableList<String>> {
+        val result = mutableListOf<MutableList<String>>()
         val cursor : Cursor = db.rawQuery(WriterConstants.GET_FILES_NAME_QUERY,null)
-        if (cursor.count>0 && cursor.moveToFirst()){
+        if (cursor.count > 0 && cursor.moveToFirst()){
             do{
-                list.add(cursor.getString(cursor.getColumnIndex("Files")))
+                val nameColumnIndex = cursor.getColumnIndex(WriterConstants.COLUMN_NAME_FILES)
+                val DOCColumnIndex = cursor.getColumnIndex(WriterConstants.COLUMN_NAME_DATE_OF_CREATION)
+                // columnIndex can be -1.
+                if (nameColumnIndex != -1 && DOCColumnIndex != -1) {
+                    val data = mutableListOf<String>()
+                    data.add(cursor.getString(nameColumnIndex))
+                    data.add(cursor.getString(DOCColumnIndex))
+                    result.add(data)
+                }
             }while (cursor.moveToNext())
         }
         cursor.close()
-        return list
+        return result
     }
 
-    fun insertFileList(name: String){
+    fun insertFileList(name: String, date: String){
         WriterConstants.NEW_FILE_NAME = name
-        //this.writableDatabase.execSQL(WriterConstants.INSERT_USER_FILE_QUERY,Array<String>(1){name})
-        this.writableDatabase.insert(WriterConstants.TABLE_NAME,
+        db.insert(WriterConstants.TABLE_NAME,
             null,
-            ContentValues().apply { put("Files",name) })
+            ContentValues().apply {
+                put(WriterConstants.COLUMN_NAME_FILES,name)
+                put(WriterConstants.COLUMN_NAME_DATE_OF_CREATION, date)
+            })
         WriterConstants.NEW_FILE_NAME = ""
     }
 
     fun updateFileName(oldName: String,newName: String){
-        /*lateinit var recName: String
-        for(i in 0..oldName.length)
-            if(oldName[i]==' ')
-                recName*/
-        this.writableDatabase.update(WriterConstants.TABLE_NAME,
+        db.update(WriterConstants.TABLE_NAME,
             ContentValues().apply { put("Files",newName) },
             "Files=?",Array(1){oldName})
     }
 
     fun deleteFile(name: String){
-        this.writableDatabase.delete(WriterConstants.TABLE_NAME,
+        db.delete(WriterConstants.TABLE_NAME,
             "Files=?",Array(1){name})
     }
 }
